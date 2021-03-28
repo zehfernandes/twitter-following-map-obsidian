@@ -1,8 +1,8 @@
-# Twitter Follows Map to Obsidian
+# Twitter Following Map with Obsidian
 
 Find if the people you follow also follow each other. [Read more](https://twitter.com/zehf/status/1375523104974327810)
 
-![](https://pbs.twimg.com/media/ExbWH78W8AAield?format=jpg&name=4096x4096
+![](https://pbs.twimg.com/media/ExbWH78W8AAield?format=jpg&name=4096x4096)
 
 ## Instructions
 
@@ -21,6 +21,7 @@ var T = new Twit({
   access_token: "",
   access_token_secret: "",
 });
+```
 
 3 - Run the script and wait until complete. 
 ```js
