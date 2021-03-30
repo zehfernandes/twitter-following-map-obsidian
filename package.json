@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "get-twitter-followings": "^1.0.2",
     "twit": "^2.2.11",
     "twitter-tokens": "^1.0.3"

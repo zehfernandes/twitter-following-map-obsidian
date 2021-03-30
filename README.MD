@@ -12,18 +12,17 @@ Find if the people you follow also follow each other. [Read more](https://twitte
 npm i --save
 ```
 
-2 - Get twitter creditals at https://developer.twitter.com/en/portal/projects-and-apps and update the `index.js`.
+2 - Get twitter creditals at https://developer.twitter.com/en/portal/projects-and-apps, copy `.env.sample` as `.env` and update the values.
 
-```js
-var T = new Twit({
-  consumer_key: "", // API key
-  consumer_secret: "", // API key secret
-  access_token: "",
-  access_token_secret: "",
-});
+```
+TWITTER_CONSUMER_KEY=…
+TWITTER_CONSUMER_SECRET=…
+TWITTER_ACCESS_TOKEN=…
+TWITTER_ACCESS_TOKEN_SECRET=…
 ```
 
-3 - Run the script and wait until complete. 
+3 - Run the script and wait until complete.
+
 ```js
 node index.js
 ```
