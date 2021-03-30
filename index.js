@@ -18,11 +18,12 @@ let dictUsers = createDictionary ? [] : getCache('userDictionary')
 async function loopFollowers() {  
 	if (createDictionary)
 		console.log("\nCreating Dictionary\n------------------------------------------")
-	
+
  	let followers = getCache(searchHandler) ? 
 		getCache(searchHandler) : 
 		await T.get('friends/ids', { screen_name: searchHandler, stringify_ids: true })
 
+	
 	let userInfos = getCache(searchHandlerID) ? 
 		getCache(searchHandlerID) : 
 		await T.get('users/lookup', { screen_name: searchHandler })
@@ -59,9 +60,12 @@ async function loopFollowers() {
 		} catch(e) {
 			console.log("---------------")
 			console.log(e)
-			await delay(900000, true);
-			console.log("---------------")
-			i = i - 1
+			// Error code for Rate limit
+			if (e.code == 88) { 
+				await delay(900000, true);
+				console.log("---------------")
+				i = i - 1
+			}
 			continue;
    		}
 	}
@@ -70,7 +74,7 @@ async function loopFollowers() {
 		writeCache("userDictionary", dictUsers)
 
 		createDictionary = false
-		console.log("\nStarting collectoing followers\n------------------------------------------")
+		console.log("\nStarting collecting followers\n------------------------------------------")
 		loopFollowers()
 	}
 	
