@@ -1,36 +1,47 @@
 const Twit = require('twit')
 const fs = require("fs")
 
-
 const searchHandler = "zehf"
+let searchHandlerID = "" // The script will find this for you
 
 var T = new Twit({
 	consumer_key: '',
-  	consumer_secret: '',
+  	consumer_secret:'',
 	access_token: '',
-	access_token_secret: ''
+	access_token_secret:''
 })
 
-let createDictionary = false
+let createDictionary = true
 let dictUsers = createDictionary ? [] : getCache('userDictionary')
 
 async function loopFollowers() {  
+	if (createDictionary)
+		console.log("\nCreating Dictionary\n------------------------------------------")
+	
  	let followers = getCache(searchHandler) ? 
 		getCache(searchHandler) : 
 		await T.get('friends/ids', { screen_name: searchHandler, stringify_ids: true })
 
-	writeCache(searchHandler, followers)
+	let userInfos = getCache(searchHandlerID) ? 
+		getCache(searchHandlerID) : 
+		await T.get('users/lookup', { screen_name: searchHandler })
+	
+	searchHandlerID = userInfos.data[0].id
 
+	writeCache(searchHandler, followers)
 	const ids = followers.data.ids
 
 	for (var i = 0; i < ids.length; i++) {
 		let userID = ids[i]
 
-		let handle = await getUserHandle(userID)
-		
-		console.log("DEBUG", i, handle)
-		
 		try {
+			let handle = await getUserHandle(userID)
+		
+			console.log("DEBUG", i, handle)
+
+			if (createDictionary)
+				continue
+
 			let userFollowing = getCache(handle) ? 
 				getCache(handle) :
 				await T.get('friends/ids', { screen_name: handle, stringify_ids: true })
@@ -38,7 +49,7 @@ async function loopFollowers() {
 				writeCache(handle, userFollowing)
 
 				// filter the list
-				let isMutal = userFollowing.data.ids.filter(id => id == "40301836").length > 0 ? true : false
+				let isMutal = userFollowing.data.ids.filter(id => id == searchHandlerID).length > 0 ? true : false
 				let filterList = userFollowing.data.ids.filter(id => ids.includes(id))
 
 				let tags = createTagList(isMutal)
@@ -54,8 +65,13 @@ async function loopFollowers() {
    		}
 	}
 
-	if (createDictionary)
+	if (createDictionary) { 
 		writeCache("userDictionary", dictUsers)
+
+		createDictionary = false
+		console.log("\nStarting collectoing followers\n------------------------------------------")
+		loopFollowers()
+	}
 	
 }
 
@@ -104,6 +120,7 @@ async function getUserHandle(id) {
 
 function createDataStructure(userHandle, followers, tags) {
 	let txt = `# ${userHandle}\n\n`
+	txt += `<iframe src="https://twitter.com/${userHandle}" height="500", width="400"></iframe>\n\n`
 
 	for (var i = 0; i < followers.length; i++) {
 		let userID = followers[i]
