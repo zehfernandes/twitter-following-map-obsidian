@@ -2,7 +2,6 @@ const Twit = require('twit')
 const fs = require("fs")
 require('dotenv').config()
 
-const searchHandler = "zehf"
 let searchHandlerID = "" // The script will find this for you
 
 var T = new Twit({
@@ -15,7 +14,7 @@ var T = new Twit({
 let createDictionary = true
 let dictUsers = createDictionary ? [] : getCache('userDictionary')
 
-async function loopFollowers() {  
+async function loopFollowers(searchHandler) {  
 	if (createDictionary)
 		console.log("\nCreating Dictionary\n------------------------------------------")
 
@@ -80,7 +79,16 @@ async function loopFollowers() {
 	
 }
 
-loopFollowers()
+const main = function () {
+	const searchHandler = process.argv[2]
+	if (searchHandler === undefined || searchHandler === "") {
+		console.error("Please pass a Twitter user handler, e.g.: node index.js zehf")
+		return
+	}
+	loopFollowers(searchHandler)
+}
+
+main()
 
 // -------------------------------------------------------
 function getCache(filename) { 
