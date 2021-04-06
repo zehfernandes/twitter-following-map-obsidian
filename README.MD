@@ -24,8 +24,10 @@ TWITTER_ACCESS_TOKEN_SECRET=…
 3 - Run the script and wait until complete.
 
 ```js
-node index.js
+node index.js <TWITTER HANDLER>
 ```
+
+For example, `node index.js zehf`.
 
 4 - Open the `valt` folder with [Obsidian](https://obsidian.md/)
 
