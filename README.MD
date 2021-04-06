@@ -23,7 +23,7 @@ TWITTER_ACCESS_TOKEN_SECRET=…
 
 3 - Run the script and wait until complete.
 
-```js
+```shell
 node index.js <TWITTER HANDLER>
 ```
 
